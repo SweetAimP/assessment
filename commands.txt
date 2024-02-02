@@ -1,0 +1,2 @@
+docker build -t DockerFile .
+docker-compose up -d
