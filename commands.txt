@@ -1,2 +1,2 @@
-docker build -t DockerFile .
+docker build -f DockerFile -t airflow_image .
 docker-compose up -d

@@ -1,6 +1,9 @@
 .git
 __pycache__
 *.pyc
-./logs
-./plugins
-./outputs
+logs
+logs/*
+plugins
+outputs
+queries/__pycache__
+logs/
