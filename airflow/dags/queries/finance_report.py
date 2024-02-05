@@ -1,6 +1,23 @@
 base_records = """
     INSERT INTO base_records
     with 
+        sold_products_with_country as (
+            select 
+            a.license_plate,
+            a.status,
+            a.platform,
+            a.platform_fee,
+            a.sold_price,
+            a.sold_price * 0.10 as buybay_fee,
+            CASE    
+                WHEN b.transport_cost is null and a.country is not null
+                    THEN 'OTHER'
+                ELSE a.country
+            END AS country
+            from sold_products a 
+            left join transport_cost b
+                using(country)
+        ),
         base_table as (
             select
                 a.license_plate,
@@ -17,16 +34,16 @@ base_records = """
                         THEN (a.sold_price * e.platform_fee) / 100
                     ELSE a.platform_fee
                 END AS platform_fee
-            from sold_products a join last_update_dim l_dim
-            on a.license_plate = l_dim.license_plate            
+            from sold_products_with_country a join last_update_dim l_dim
+                on UPPER(a.license_plate) = UPPER(l_dim.license_plate)
             join graded_products b
-            on a.license_plate = b.license_plate
+                on UPPER(a.license_plate) = UPPER(b.license_plate)
             join grading_fees c
-            on b.grading_cat = c.grading_cat
-            join transport_cost d
-            on a.country = d.country
+                on UPPER(b.grading_cat) = UPPER(c.grading_cat)
+            left join transport_cost d
+                on UPPER(a.country) = UPPER(d.country)
             left join platform_fees e
-            on a.platform = e.platform
+                on UPPER(a.platform) = UPPER(e.platform)
     )
     select
         *,
@@ -47,6 +64,7 @@ finance_report ="""
                 sum(transport_fee) total_transport_fee,
                 sum(partner_payout) total_partner_payout
             from base_records
+            where status = 'shipped'
             group by platform, last_update_day
         )
         select

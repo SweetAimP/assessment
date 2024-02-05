@@ -65,7 +65,7 @@ with DAG(
     wait_for_tasks = ExternalTaskSensor(
         task_id='wait_for_tasks',
         external_dag_id='create_tables',
-        external_task_ids =["create_graded_products_tb", "create_grading_fees_tb", "create_sold_products_tb", "create_transport_cost_tb","platform_fees_tb"],  
+        external_task_ids =["create_graded_products_tb", "create_grading_fees_tb", "create_sold_products_tb", "create_transport_cost_tb","create_platform_fees_tb"],  
         check_existence = True,
         mode='poke', 
         timeout=600, 
