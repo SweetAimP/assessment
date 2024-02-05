@@ -33,7 +33,7 @@ In this repo you will find three different folders, **airflow**,**flask_app** an
 
 To be able to run this solution you will need to have Docker Desktop install, as this solution is dockerized. Once you have check you already have Docker you can follow the next steps:
 1. **clone the repo**
-2. **Build the API Image** from the root folder level of the repo you can build the image used for the API container with the following command. *build -f .\flask_app\DockerFile -t flask_api .\flask_app\* this command will build the image referenced in the docker-compose.yaml.
+2. **Build the API Image** from the root folder level of the repo you can build the image used for the API container with the following command. (build -f .\flask_app\DockerFile -t flask_api .\flask_app\) this command will build the image referenced in the docker-compose.yaml.
 3. **From the root folder** level of the repo execute the next command *docker compose up -d* this command with start deploying the containers.
 4. **Once everything is up** you can access airflow webserver *http://localhost:8080* there you will find 3 dags paused.
 5. **Unpause the dags**
