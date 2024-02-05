@@ -33,10 +33,11 @@ In this repo you will find three different folders, **airflow**,**flask_app** an
 
 To be able to run this solution you will need to have Docker Desktop install, as this solution is dockerized. Once you have check you already have Docker you can follow the next steps:
 1. **clone the repo**
-2. **From the root folder** level of the repo execute the next command *docker compose up -d* this command with start deploying the containers.
-3. **Once everything is up** you can access airflow webserver *http://localhost:8080* there you will find 3 dags paused.
-4. **Unpause the dags**
-5. **Execute** only the dag called ***create_tables***, this dag is configured to trigger the other two dags, they have a explicit dependency (for this solution I found it accurate to show, how you can call multiple dags depending on the final state of other dag using Sensors)
-6. **Once finished** the execution of the dag called *finance report* you can go to the Output folder, there should be the csv generated for the Finance Report.
-7. **(Optional)** if you want to check the tables created during the process you can login to the adminer( *http://localhost:8088/* ) I did include in the *docker-compose.yaml*
-8. **API Check** Now that everything has finished and the tables are ready you can curl the API Server to list items using the *License_plate* using the following structure (**curl http://127.0.0.1:5000/v1/item/BW221109148489**), in case you try to request with a License_plate not found you will get a "No record found" response.
+2. **Build the API Image** from the root folder level of the repo you can build the image used for the API container with the following command. *build -f .\flask_app\DockerFile -t flask_api .\flask_app\* this command will build the image referenced in the docker-compose.yaml.
+3. **From the root folder** level of the repo execute the next command *docker compose up -d* this command with start deploying the containers.
+4. **Once everything is up** you can access airflow webserver *http://localhost:8080* there you will find 3 dags paused.
+5. **Unpause the dags**
+6. **Execute** only the dag called ***create_tables***, this dag is configured to trigger the other two dags, they have a explicit dependency (for this solution I found it accurate to show, how you can call multiple dags depending on the final state of other dag using Sensors)
+7. **Once finished** the execution of the dag called *finance report* you can go to the Output folder, there should be the csv generated for the Finance Report.
+8. **(Optional)** if you want to check the tables created during the process you can login to the adminer( *http://localhost:8088/* ) I did include in the *docker-compose.yaml*
+9. **API Check** Now that everything has finished and the tables are ready you can curl the API Server to list items using the *License_plate* using the following structure (**curl http://127.0.0.1:5000/v1/item/BW221109148489**), in case you try to request with a License_plate not found you will get a "No record found" response.
