@@ -1,9 +1,9 @@
 .git
 __pycache__
 *.pyc
-logs
-logs/*
-plugins
+airflow/logs
+airflow/logs/*
+airflow/plugins
 outputs
-queries/__pycache__
-logs/
+airflow/queries/__pycache__
+airflow/logs/
