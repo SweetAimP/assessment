@@ -5,17 +5,10 @@ from service import *
 app = Flask(__name__)
 data = []
 
-def serialize(book):
-    return {
-        "id" : book.id,
-        "title": book.title,
-        "author": book.author,
-        "date": book.date,
-        "last_update": book.last_update
-    }
-@app.route('/v1/item/<int:item_id>', methods=['GET'])
-def item(item_id):
-    item = get_canceled_item_list(item_id) # [serialize(book)for book in get_canceled_item_list()]
+@app.route('/v1/item/<license_plate>', methods=['GET'])
+def item(license_plate):
+    print("Controler")
+    item = get_canceled_item_list(license_plate) # [serialize(book)for book in get_canceled_item_list()]
     return jsonify(item)
     
 if __name__ == '__main__':
