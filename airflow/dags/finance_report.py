@@ -1,5 +1,7 @@
 from airflow import DAG
 from airflow.operators.postgres_operator import PostgresOperator
+from airflow.operators.python import PythonOperator
+from airflow.providers.postgres.hooks.postgres import PostgresHook
 from datetime import datetime, timedelta
 from queries.create_base_tables import base_records_tb, finance_report_tb
 from queries.finance_report import base_records,finance_report
@@ -12,6 +14,16 @@ args = {
     'retries' : 2
     
 }
+
+def postgres_to():
+    query = """
+        Select * from finance_report;
+    """
+    hook = PostgresHook(postgres_conn_id="postgresconn")
+    conn = hook.get_conn()
+    cursor = conn.cursor()
+    cursor.execute(query)
+
 
 with DAG(
     dag_id="finance_report",
@@ -36,6 +48,12 @@ with DAG(
         postgres_conn_id="postgresconn",
         task_id="populate_base_records_tb",
         sql = base_records
+    )
+
+    populate_finance_report_tb = PostgresOperator(
+        postgres_conn_id="postgresconn",
+        task_id="populate_finance_report_tb",
+        sql = finance_report
     )
 
     populate_finance_report_tb = PostgresOperator(
