@@ -3,6 +3,8 @@ from airflow.operators.postgres_operator import PostgresOperator
 from airflow.operators.dagrun_operator import TriggerDagRunOperator
 from airflow.sensors.external_task import ExternalTaskSensor
 from datetime import datetime, timedelta
+from queries.merge_last_update_dim import merge_last_update_dim
+
 args = {
     'owner': 'Diego',
     'email_on_failure': True,
@@ -67,10 +69,16 @@ with DAG(
         )
     )
 
+    merge_last_update = PostgresOperator(
+        postgres_conn_id="postgresconn",
+        task_id="merge_last_update",
+        sql = merge_last_update_dim
+    )
+
     wait_for_tasks = ExternalTaskSensor(
         task_id='wait_for_tasks',
         external_dag_id='migrate_data',
-        external_task_ids =["migrate_graded_products_tb", "migrate_grading_fees_tb", "migrate_sold_products_tb", "migrate_transport_cost_tb", "migrate_platform_fees_tb"],  
+        external_task_id="merge_last_update",  
         check_existence = True,
         mode='poke', 
         timeout=600, 
@@ -85,4 +93,4 @@ with DAG(
         dag=dag,
     )
 
-    [migrate_graded_products_tb, migrate_grading_fees_tb, migrate_sold_products_tb, migrate_transport_cost_tb, migrate_platform_fees_tb] >> wait_for_tasks >> trigger_child_dag
+    [migrate_graded_products_tb, migrate_grading_fees_tb, migrate_sold_products_tb, migrate_transport_cost_tb, migrate_platform_fees_tb] >> merge_last_update >> wait_for_tasks >> trigger_child_dag

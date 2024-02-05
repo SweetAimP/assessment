@@ -6,7 +6,8 @@ base_records = """
                 a.license_plate,
                 a.status,
                 a.platform,
-                date_trunc('day',a.shipped_at)::date as shipped_at_day,
+                l_dim.last_update,
+                date_trunc('day',l_dim.last_update)::date as last_update_day,
                 a.sold_price,
                 a.sold_price * 0.10  as buybay_fee,
                 c.cost as grading_fee,
@@ -16,7 +17,9 @@ base_records = """
                         THEN (a.sold_price * e.platform_fee) / 100
                     ELSE a.platform_fee
                 END AS platform_fee
-            from sold_products a join graded_products b
+            from sold_products a join last_update_dim l_dim
+            on a.license_plate = l_dim.license_plate            
+            join graded_products b
             on a.license_plate = b.license_plate
             join grading_fees c
             on b.grading_cat = c.grading_cat
@@ -36,7 +39,7 @@ finance_report ="""
         aggregatted_fees as (
             select
                 platform,
-                shipped_at_day,
+                last_update_day,
                 sum(sold_price) total_income,
                 sum(buybay_fee) total_buybay_fee,
                 sum(grading_fee) total_grading_fee,
@@ -44,11 +47,11 @@ finance_report ="""
                 sum(transport_fee) total_transport_fee,
                 sum(partner_payout) total_partner_payout
             from base_records
-            group by platform, shipped_at_day
+            group by platform, last_update_day
         )
         select
             platform,
-            shipped_at_day,
+            last_update_day,
             total_income,
             total_buybay_fee,
             total_grading_fee,

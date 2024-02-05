@@ -20,33 +20,39 @@ with DAG(
     schedule_interval=None,
 ) as dag:
 
-    graded_products_tb = PostgresOperator(
+    create_last_update_dim = PostgresOperator(
+        postgres_conn_id="postgresconn",
+        task_id="create_last_update_dim",
+        sql = last_update_dim,
+    )
+
+    create_graded_products_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
         task_id="create_graded_products_tb",
         sql = graded_products_tb,
     )
 
-    grading_fees_tb = PostgresOperator(
+    create_grading_fees_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
         task_id="create_grading_fees_tb",
         sql = grading_fees_tb,
     )
 
-    sold_products_tb = PostgresOperator(
+    create_sold_products_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
         task_id="create_sold_products_tb",
         sql = sold_products_tb,
     )
 
-    transport_cost_tb = PostgresOperator(
+    create_transport_cost_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
         task_id="create_transport_cost_tb",
         sql = transport_cost_tb,
     )
 
-    platform_fees_tb = PostgresOperator(
+    create_platform_fees_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
-        task_id="platform_fees_tb",
+        task_id="create_platform_fees_tb",
         sql = platform_fees_tb,
     )
 
@@ -68,4 +74,4 @@ with DAG(
         dag=dag,
     )
 
-    [graded_products_tb, grading_fees_tb, sold_products_tb, transport_cost_tb, platform_fees_tb] >> wait_for_tasks >> trigger_child_dag
+    [create_last_update_dim, create_graded_products_tb, create_grading_fees_tb, create_sold_products_tb, create_transport_cost_tb, create_platform_fees_tb] >> wait_for_tasks >> trigger_child_dag
