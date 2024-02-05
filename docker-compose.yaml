@@ -93,6 +93,8 @@ services:
       POSTGRES_PASSWORD: example
     volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/inputs:/opt/airflow/inputs
+    ports:
+      - 5432:5432
 
   adminer:
     image: adminer

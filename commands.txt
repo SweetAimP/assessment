@@ -1,3 +1,3 @@
 docker build -f DockerFile -t airflow_image .
 docker-compose up -d
-docker exec -it 0cc807d93b652c63c589e7d3eb4aac58b709adbf5280a322b5987588c26fe694 psql -U postgres -W postgres
+docker exec -it a2d7ffc7b012f3f7a1b848674aaeb8ab18d8503a968f9581370e2284b4703bd9 psql -U postgres -W postgres

@@ -30,3 +30,9 @@ transport_cost = """
             transport_cost REAL NULL
             );
             """
+platform_fees = """
+            CREATE TABLE IF NOT EXISTS platform_fees (
+            platform VARCHAR PRIMARY KEY,
+            platform_fee REAL NULL
+            );
+            """

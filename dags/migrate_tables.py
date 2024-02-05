@@ -56,4 +56,13 @@ with DAG(
         )
     )
 
-    [graded_products_tb, grading_fees_tb, sold_products_tb, transport_cost_tb]
+    platform_fees_tb = PostgresOperator(
+        postgres_conn_id="postgresconn",
+        task_id="platform_fees_tb",
+        sql = build_query(
+                "transport_cost",
+                "/opt/airflow/inputs/platform_fees.csv"
+        )
+    )
+
+    [graded_products_tb, grading_fees_tb, sold_products_tb, transport_cost_tb, platform_fees_tb]

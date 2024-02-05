@@ -44,6 +44,12 @@ with DAG(
         sql = transport_cost,
     )
 
+    platform_fees_tb = PostgresOperator(
+        postgres_conn_id="postgresconn",
+        task_id="platform_fees_tb",
+        sql = platform_fees,
+    )
+
     trigger_child_dag = TriggerDagRunOperator(
         task_id='trigger_child_dag',
         trigger_dag_id='migrate_data',
@@ -53,7 +59,7 @@ with DAG(
     wait_for_tasks = ExternalTaskSensor(
         task_id='wait_for_tasks',
         external_dag_id='create_tables',
-        external_task_ids =["create_graded_products_tb", "create_grading_fees_tb", "create_sold_products_tb", "create_transport_cost_tb"],  
+        external_task_ids =["create_graded_products_tb", "create_grading_fees_tb", "create_sold_products_tb", "create_transport_cost_tb","platform_fees_tb"],  
         check_existence = True,
         mode='poke', 
         timeout=600, 
@@ -62,4 +68,4 @@ with DAG(
         dag=dag,
     )
 
-    [graded_products_tb, grading_fees_tb, sold_products_tb, transport_cost_tb] >> wait_for_tasks >> trigger_child_dag
+    [graded_products_tb, grading_fees_tb, sold_products_tb, transport_cost_tb, platform_fees_tb] >> wait_for_tasks >> trigger_child_dag
