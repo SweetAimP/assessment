@@ -22,45 +22,45 @@ with DAG(
     start_date=datetime(2024,1,1)
 ) as dag:
 
-    graded_products_tb = PostgresOperator(
+    migrate_graded_products_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
-        task_id="create_graded_products_tb",
+        task_id="migrate_graded_products_tb",
         sql = build_query(
                 "graded_products",
                 "/opt/airflow/inputs/graded_products.csv"
         )
     )
 
-    grading_fees_tb = PostgresOperator(
+    migrate_grading_fees_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
-        task_id="create_grading_fees_tb",
+        task_id="migrate_grading_fees_tb",
         sql = build_query(
                 "grading_fees",
                 "/opt/airflow/inputs/grading_fees.csv"
         )
     )
 
-    sold_products_tb = PostgresOperator(
+    migrate_sold_products_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
-        task_id="create_sold_products_tb",
+        task_id="migrate_sold_products_tb",
         sql = build_query(
                 "sold_products",
                 "/opt/airflow/inputs/sold_products.csv"
         )
     )
 
-    transport_cost_tb = PostgresOperator(
+    migrate_transport_cost_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
-        task_id="transport_cost_tb",
+        task_id="migrate_transport_cost_tb",
         sql = build_query(
                 "transport_cost",
                 "/opt/airflow/inputs/transport_cost.csv"
         )
     )
 
-    platform_fees_tb = PostgresOperator(
+    migrate_platform_fees_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
-        task_id="platform_fees_tb",
+        task_id="migrate_platform_fees_tb",
         sql = build_query(
                 "platform_fees",
                 "/opt/airflow/inputs/platform_fees.csv"
@@ -70,7 +70,7 @@ with DAG(
     wait_for_tasks = ExternalTaskSensor(
         task_id='wait_for_tasks',
         external_dag_id='migrate_data',
-        external_task_ids =["graded_products_tb", "grading_fees_tb", "sold_products_tb", "transport_cost_tb", "platform_fees_tb"],  
+        external_task_ids =["migrate_graded_products_tb", "migrate_grading_fees_tb", "migrate_sold_products_tb", "migrate_transport_cost_tb", "migrate_platform_fees_tb"],  
         check_existence = True,
         mode='poke', 
         timeout=600, 
@@ -85,4 +85,4 @@ with DAG(
         dag=dag,
     )
 
-    [graded_products_tb, grading_fees_tb, sold_products_tb, transport_cost_tb, platform_fees_tb] >> wait_for_tasks >> trigger_child_dag
+    [migrate_graded_products_tb, migrate_grading_fees_tb, migrate_sold_products_tb, migrate_transport_cost_tb, migrate_platform_fees_tb] >> wait_for_tasks >> trigger_child_dag

@@ -28,7 +28,7 @@ base_records = """
     select
         *,
         sold_price - buybay_fee - transport_fee - platform_fee - grading_fee as partner_payout
-    from base_table
+    from base_table;
     """
 finance_report ="""
     INSERT INTO finance_report
@@ -43,7 +43,7 @@ finance_report ="""
                 sum(platform_fee) total_platform_fee,
                 sum(transport_fee) total_transport_fee,
                 sum(partner_payout) total_partner_payout
-            from partners_payout
+            from base_records
             group by platform, shipped_at_day
         )
         select
@@ -56,5 +56,5 @@ finance_report ="""
             total_partner_payout,
             (total_buybay_fee + total_grading_fee + total_platform_fee) total_fees
         from aggregatted_fees
-    order by total_income desc
+    order by total_income desc;
 """

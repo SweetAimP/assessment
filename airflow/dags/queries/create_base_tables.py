@@ -8,7 +8,7 @@ graded_products_tb = """
 grading_fees_tb = """
             CREATE TABLE IF NOT EXISTS grading_fees (
             grading_cat VARCHAR PRIMARY KEY,
-            cost MONEY NULL
+            cost REAL NULL
             );
             """
 sold_products_tb = """
@@ -18,22 +18,22 @@ sold_products_tb = """
             platform VARCHAR NULL,
             created_at TIMESTAMP NULL,
             shipped_at TIMESTAMP NULL,
-            sold_price MONEY NULL,
+            sold_price REAL NULL,
             country VARCHAR NULL,
             channel_ref VARCHAR NULL,
-            platform_fee MONEY NULL
+            platform_fee REAL NULL
             );
             """
 transport_cost_tb = """
             CREATE TABLE IF NOT EXISTS transport_cost (
             country VARCHAR PRIMARY KEY,
-            transport_cost MONEY NULL
+            transport_cost REAL NULL
             );
             """
 platform_fees_tb = """
             CREATE TABLE IF NOT EXISTS platform_fees (
             platform VARCHAR PRIMARY KEY,
-            platform_fee MONEY NULL
+            platform_fee REAL NULL
             );
             """
 
@@ -43,12 +43,12 @@ base_records_tb = """
             status VARCHAR NULL,
             platform VARCHAR NULL,
             shipped_at_day DATE NULL,
-            sold_price MONEY NULL,
-            buybay_fee MONEY NULL,
-            grading_fee MONEY NULL,
-            transport_fee MONEY NULL,
-            platform_fee MONEY NULL,
-            partner_payout MONEY NULL
+            sold_price REAL NULL,
+            buybay_fee REAL NULL,
+            grading_fee REAL NULL,
+            transport_fee REAL NULL,
+            platform_fee REAL NULL,
+            partner_payout REAL NULL
             );
             """
 
@@ -56,10 +56,18 @@ finance_report_tb = """
             CREATE TABLE IF NOT EXISTS finance_report (
             platform VARCHAR NULL,
             shipped_at_day DATE NULL,
-            total_income MONEY NULL,
-            total_buybay_fee MONEY NULL,
-            total_grading_fee MONEY NULL,
-            total_transport_fee MONEY NULL,
-            total_partner_payout MONEY NULL,
-            total_fees MONEY NULL
+            total_income REAL NULL,
+            total_buybay_fee REAL NULL,
+            total_grading_fee REAL NULL,
+            total_transport_fee REAL NULL,
+            total_partner_payout REAL NULL,
+            total_fees REAL NULL
+            );
+            """
+
+last_update_dim = """
+            CREATE TABLE IF NOT EXISTS last_update_dim (
+            license_plate VARCHAR PRIMARY KEY,
+            last_update TIMESTAMP
+            );
             """

@@ -23,7 +23,7 @@ def set_metadata(df):
 
 
 def _get_canceled_item_list(license_plate):
-    query = "select * from sold_products where license_plate = '{}' ;".format(license_plate)
+    query = "select * from base_records where license_plate = '{}' ;".format(license_plate)
     df = pd.read_sql_query(query,con=get_connection())
     if df.empty:
         return Product(), Metadata()
