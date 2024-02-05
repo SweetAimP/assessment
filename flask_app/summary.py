@@ -5,12 +5,13 @@ class Summary():
     
     def serialize(self):
         summary = {
-            "metadata":{}
+            "product" : {},
+            "metadata": {}
             }
         product_vars = vars(self.product)
         metadata_vars = vars(self.metadata)
         for p_attr in self.p_attr:
-            summary[p_attr] = product_vars[p_attr]
+            summary["product"][p_attr] = product_vars[p_attr]
         for m_attr in self.m_attr:
             summary["metadata"][m_attr] = metadata_vars[m_attr]
         return summary

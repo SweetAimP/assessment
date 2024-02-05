@@ -3,7 +3,7 @@ from dataClass import Product,Metadata
 from connection import get_connection
 
 def set_product(df):
-    pepe = Product (
+    return Product (
         license_plate=df['license_plate'].iloc[0],
         status=df['status'].iloc[0],
         sold_price=df['sold_price'].iloc[0],
@@ -13,12 +13,10 @@ def set_product(df):
         grading_fee=df['grading_fee'].iloc[0],
         partner_payout=df['partner_payout'].iloc[0]
     )
-    print(vars(pepe))
-    return pepe
 
 def set_metadata(df):
     return  Metadata(
-        last_update = 0#df['last_update'].iloc[0]
+        last_update = df['last_update'].iloc[0]
     )
 
 

@@ -7,5 +7,5 @@ def get_canceled_item_list(license_plate):
         return CancelSummary(product, metadata).serialize()
     elif product.status == 'shipped':
         return SuccessSummary(product, metadata).serialize()
-    else:
-        pass
+    elif  product.status == None:
+        return "Record not found"
