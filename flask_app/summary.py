@@ -35,7 +35,7 @@ class SuccessSummary(Summary):
             "license_plate",
             "sold_price",
             "buybay_fee",
-            "transport_cost",
+            "transport_fee",
             "platform_fee",
             "grading_fee",
             "partner_payout",
