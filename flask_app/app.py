@@ -15,8 +15,7 @@ def serialize(book):
     }
 @app.route('/v1/item/<int:item_id>', methods=['GET'])
 def item(item_id):
-    canceled_items = get_canceled_item_list() # [serialize(book)for book in get_canceled_item_list()]
-    print(type(canceled_items['count'].iloc[0]))
+    item = get_canceled_item_list(item_id) # [serialize(book)for book in get_canceled_item_list()]
     return str(canceled_items['count'].iloc[0])
     
 if __name__ == '__main__':
