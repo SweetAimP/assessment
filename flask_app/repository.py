@@ -7,11 +7,11 @@ def set_product(df):
         license_plate=df['license_plate'].iloc[0],
         status=df['status'].iloc[0],
         sold_price=df['sold_price'].iloc[0],
-        #buybay_fee=df['buybay_fee'].iloc[0],
-        #transport_cost=df['transport_cost'].iloc[0],
+        buybay_fee=df['buybay_fee'].iloc[0],
+        transport_cost=df['transport_cost'].iloc[0],
         platform_fee=df['platform_fee'].iloc[0],
-        #grading_fee=df['grading_fee'].iloc[0],
-        #partner_payout=df['partner_payout'].iloc[0]
+        grading_fee=df['grading_fee'].iloc[0],
+        partner_payout=df['partner_payout'].iloc[0]
     )
     print(vars(pepe))
     return pepe

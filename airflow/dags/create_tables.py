@@ -23,31 +23,31 @@ with DAG(
     graded_products_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
         task_id="create_graded_products_tb",
-        sql = graded_products,
+        sql = graded_products_tb,
     )
 
     grading_fees_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
         task_id="create_grading_fees_tb",
-        sql = grading_fees,
+        sql = grading_fees_tb,
     )
 
     sold_products_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
         task_id="create_sold_products_tb",
-        sql = sold_products,
+        sql = sold_products_tb,
     )
 
     transport_cost_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
         task_id="create_transport_cost_tb",
-        sql = transport_cost,
+        sql = transport_cost_tb,
     )
 
     platform_fees_tb = PostgresOperator(
         postgres_conn_id="postgresconn",
         task_id="platform_fees_tb",
-        sql = platform_fees,
+        sql = platform_fees_tb,
     )
 
     trigger_child_dag = TriggerDagRunOperator(

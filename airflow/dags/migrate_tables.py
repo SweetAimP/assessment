@@ -1,5 +1,7 @@
 from airflow import DAG
 from airflow.operators.postgres_operator import PostgresOperator
+from airflow.operators.dagrun_operator import TriggerDagRunOperator
+from airflow.sensors.external_task import ExternalTaskSensor
 from datetime import datetime, timedelta
 args = {
     'owner': 'Diego',
@@ -65,4 +67,22 @@ with DAG(
         )
     )
 
-    [graded_products_tb, grading_fees_tb, sold_products_tb, transport_cost_tb, platform_fees_tb]
+    wait_for_tasks = ExternalTaskSensor(
+        task_id='wait_for_tasks',
+        external_dag_id='migrate_data',
+        external_task_ids =["graded_products_tb", "grading_fees_tb", "sold_products_tb", "transport_cost_tb", "platform_fees_tb"],  
+        check_existence = True,
+        mode='poke', 
+        timeout=600, 
+        retries=0,  
+        poke_interval=60,
+        dag=dag,
+    )
+
+    trigger_child_dag = TriggerDagRunOperator(
+        task_id='trigger_child_dag',
+        trigger_dag_id='finance_report',
+        dag=dag,
+    )
+
+    [graded_products_tb, grading_fees_tb, sold_products_tb, transport_cost_tb, platform_fees_tb] >> wait_for_tasks >> trigger_child_dag
