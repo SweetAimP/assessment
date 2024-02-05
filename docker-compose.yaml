@@ -99,7 +99,7 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: postgres
     volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/inputs:/opt/airflow/inputs
     ports:

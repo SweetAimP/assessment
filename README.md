@@ -38,5 +38,8 @@ To run this solution, follow these steps:
 4. Unpause the DAGs.
 5. Execute only the DAG called create_tables. This DAG triggers the other two DAGs, with an explicit dependency.
 6. After the execution of the finance report DAG is finished, check the Output folder for the generated CSV file.
-7. (Optional) To check the tables created during the process, log in to Adminer at **http://localhost:8088**, included in the docker-compose.yaml.
+7. (Optional) To check the tables created during the process, log in to Adminer at **http://localhost:8088**, included in the ***docker-compose.yaml***.
+    1. **Select** PostgresSQL (database)
+    2. **User**: postgres
+    3. **Password**: postgres
 8. API Check: Now that everything is finished and the tables are ready, use curl to query the API server and list items using the License_plate. Example: curl http://127.0.0.1:5000/v1/item/BW221109148489. A "No record found" response is expected for non-existent License_plates.
