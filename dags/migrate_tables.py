@@ -60,7 +60,7 @@ with DAG(
         postgres_conn_id="postgresconn",
         task_id="platform_fees_tb",
         sql = build_query(
-                "transport_cost",
+                "platform_fees",
                 "/opt/airflow/inputs/platform_fees.csv"
         )
     )

@@ -86,6 +86,12 @@ x-airflow-common:
       condition: service_healthy
 
 services:
+  flask_api:
+    image: flask_api
+    restart: always
+    ports:
+      - 5000:5000
+      
   db:
     image: postgres
     restart: always

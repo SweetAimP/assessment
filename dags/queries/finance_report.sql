@@ -5,8 +5,13 @@ base_table as (
         date_trunc('day',a.shipped_at)::date as shipped_at_day,
         a.sold_price,
         a.sold_price * 0.10  as buybay_fee,
-        a.sold_price * (c.cost/100) as grading_fee,
-        d.transport_cost as transport_fee
+        c.cost as grading_fee,
+        d.transport_cost as transport_fee,
+        CASE 
+            WHEN a.platform_fee is null 
+                THEN (a.sold_price * e.platform_fee) / 100
+            ELSE a.platform_fee
+        END AS platform_fee
     from sold_products a join graded_products b
     on a.license_plate = b.license_plate
     join grading_fees c
@@ -21,7 +26,7 @@ partners_payout as (
     select
         *,
         sold_price - buybay_fee - transport_fee - platform_fee - grading_fee as partner_payout
-    from base_table a
+    from base_table
 ),
 aggregatted_fees as (
     select
@@ -42,7 +47,8 @@ select
     total_income,
     total_buybay_fee,
     total_grading_fee,
-    (total_buybay_fee + total_grading_fee + total_platform_fee) total_fees,
     total_transport_fee,
-    total_partner_payout
-from aggregatted_fees;
+    total_partner_payout,
+    (total_buybay_fee + total_grading_fee + total_platform_fee) total_fees
+from aggregatted_fees
+order by total_income desc;
