@@ -1,6 +1,6 @@
 # Data Engineer Assessment
 ## Overview
-This repository contains the assessment for the Data Engineer position. It includes a solution with three main components: airflow, flask_app, and inputs. The solution is dockerized, and the containers are defined in the docker-compose.yaml file at the root level.
+This repository contains the assessment for the Data Engineer position. It includes a solution with three main components: ***airflow***, ***flask_app***, and ***inputs***. The solution is dockerized, and the containers are defined in the ***docker-compose.yaml*** file at the root level.
 
 # Project Structure
 
@@ -32,11 +32,11 @@ Folder containing files used as inputs (Raw Data). Includes a new file (**Platfo
 # How to Run
 To run this solution, follow these steps:
 
-1. Clone the repo: git clone https://github.com/SweetAimP/assessment
-2. From the root folder, execute: docker-compose up -d to deploy the containers.
-3. Once everything is up, access the Airflow web server at http://localhost:8080. Three DAGs are initially paused.
+1. Clone the repo: git clone **https://github.com/SweetAimP/assessment**
+2. From the root folder, execute: **docker-compose up -d** to deploy the containers.
+3. Once everything is up, access the Airflow web server at **http://localhost:8080**. Three DAGs are initially paused.
 4. Unpause the DAGs.
 5. Execute only the DAG called create_tables. This DAG triggers the other two DAGs, with an explicit dependency.
 6. After the execution of the finance report DAG is finished, check the Output folder for the generated CSV file.
-7. (Optional) To check the tables created during the process, log in to Adminer at http://localhost:8088/, included in the docker-compose.yaml.
+7. (Optional) To check the tables created during the process, log in to Adminer at **http://localhost:8088**, included in the docker-compose.yaml.
 8. API Check: Now that everything is finished and the tables are ready, use curl to query the API server and list items using the License_plate. Example: curl http://127.0.0.1:5000/v1/item/BW221109148489. A "No record found" response is expected for non-existent License_plates.
