@@ -3,6 +3,7 @@ from airflow.operators.postgres_operator import PostgresOperator
 from airflow.operators.python import PythonOperator
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from datetime import datetime, timedelta
+import pandas as pd
 from queries.create_base_tables import base_records_tb, finance_report_tb
 from queries.finance_report import base_records,finance_report
 
@@ -12,17 +13,17 @@ args = {
     'email': ['diealejo96@gmail.com'],
     'retry_delay':timedelta(minutes=5),
     'retries' : 2
-    
+
 }
 
-def postgres_to():
+def _export_report():
     query = """
         Select * from finance_report;
     """
     hook = PostgresHook(postgres_conn_id="postgresconn")
     conn = hook.get_conn()
-    cursor = conn.cursor()
-    cursor.execute(query)
+    res = pd.read_sql(query,conn)
+    res.to_csv('/opt/airflow/outputs/finance_report.csv')
 
 
 with DAG(
@@ -56,10 +57,9 @@ with DAG(
         sql = finance_report
     )
 
-    populate_finance_report_tb = PostgresOperator(
-        postgres_conn_id="postgresconn",
-        task_id="populate_finance_report_tb",
-        sql = finance_report
+    export_report = PythonOperator(
+        task_id="export_report",
+        python_callable=_export_report
     )
 
-    [base_records_tb, finance_report_tb] >> populate_base_records_tb >> populate_finance_report_tb
+    [base_records_tb, finance_report_tb] >> populate_base_records_tb >> populate_finance_report_tb >> export_report
