@@ -7,8 +7,7 @@ data = []
 
 @app.route('/v1/item/<license_plate>', methods=['GET'])
 def item(license_plate):
-    print("Controler")
-    item = get_canceled_item_list(license_plate) # [serialize(book)for book in get_canceled_item_list()]
+    item = get_canceled_item_list(license_plate)
     return jsonify(item)
     
 if __name__ == '__main__':
