@@ -2,6 +2,11 @@
 ## Overview
 This repository contains the assessment for the Data Engineer position. It includes a solution with three main components: ***airflow***, ***flask_app***, and ***inputs***. The solution is dockerized, and the containers are defined in the ***docker-compose.yaml*** file at the root level.
 
+
+<img src="architectures/general_architecture.png"  width="90%">
+
+
+
 # Project Structure
 
 ## Airflow
@@ -20,6 +25,10 @@ This repository contains the assessment for the Data Engineer position. It inclu
 * **service**: Python file acting as an intermediary between the controller (app.py) and the repository, responsible for building the summary (serialization).
 * **repository**: Python file specialized in handling the last interactions during the request, specifically for database requests/responses.
 * **app**.py: Main file to run the API (Controller), responsible for handling all requests and returning responses.
+
+
+<img src="architectures/flask_design.png"  width="70%">
+
 
 # Inputs
 Folder containing files used as inputs (Raw Data). Includes a new file (**Platform_fees.csv**) used as a dimension to reference data without modifying queries.
