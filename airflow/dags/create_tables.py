@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.postgres_operator import PostgresOperator
-from airflow.operators.dagrun_operator import TriggerDagRunOperator
-from airflow.sensors.external_task import ExternalTaskSensor
+from airflow.operators.bash import BashOperator
 from queries.create_base_tables import *
+from airflow.datasets import Dataset
+
 
 default_args = {
     'owner': 'Diego',
@@ -57,22 +58,11 @@ with DAG(
         sql = platform_fees_tb,
     )
 
-    trigger_child_dag = TriggerDagRunOperator(
-        task_id='trigger_child_dag',
-        trigger_dag_id='migrate_data',
-        dag=dag,
+
+    signal = BashOperator(
+        task_id="producer", 
+        outlets=[Dataset("s3://dataset/dataset1.csv")],
+        bash_command='echo "pepe"'
     )
 
-    wait_for_tasks = ExternalTaskSensor(
-        task_id='wait_for_tasks',
-        external_dag_id='create_tables',
-        external_task_ids =["create_graded_products_tb", "create_grading_fees_tb", "create_sold_products_tb", "create_transport_cost_tb","create_platform_fees_tb"],  
-        check_existence = True,
-        mode='poke', 
-        timeout=600, 
-        retries=0,  
-        poke_interval=60,
-        dag=dag,
-    )
-
-    [create_last_update_dim, create_graded_products_tb, create_grading_fees_tb, create_sold_products_tb, create_transport_cost_tb, create_platform_fees_tb] >> wait_for_tasks >> trigger_child_dag
+    [create_last_update_dim, create_graded_products_tb, create_grading_fees_tb, create_sold_products_tb, create_transport_cost_tb, create_platform_fees_tb] >> signal

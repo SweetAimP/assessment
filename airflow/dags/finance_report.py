@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from queries.create_base_tables import base_records_tb, finance_report_tb
 from queries.finance_report import base_records,finance_report
+from airflow.datasets import Dataset
 
 args = {
     'owner': 'Diego',
@@ -13,7 +14,6 @@ args = {
     'email': ['diealejo96@gmail.com'],
     'retry_delay':timedelta(minutes=5),
     'retries' : 2
-
 }
 
 def _export_report():
@@ -30,7 +30,7 @@ with DAG(
     dag_id="finance_report",
     default_args=args,
     description='Dag that creates the final report for finance',
-    schedule_interval=None,
+    schedule=[Dataset("s3://dataset/dataset2.csv")],
     start_date=datetime.now()
 ) as dag:
 

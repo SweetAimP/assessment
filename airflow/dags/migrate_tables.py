@@ -1,9 +1,8 @@
 from airflow import DAG
 from airflow.operators.postgres_operator import PostgresOperator
-from airflow.operators.dagrun_operator import TriggerDagRunOperator
-from airflow.sensors.external_task import ExternalTaskSensor
 from datetime import datetime, timedelta
 from queries.merge_last_update_dim import merge_last_update_dim
+from airflow.datasets import Dataset
 
 args = {
     'owner': 'Diego',
@@ -21,7 +20,7 @@ with DAG(
     dag_id="migrate_data",
     default_args=args,
     description='Dag that populates de base tables',
-    schedule_interval=None,
+    schedule=[Dataset("s3://dataset/dataset1.csv")],
     start_date=datetime.now()
 ) as dag:
 
@@ -73,25 +72,8 @@ with DAG(
     merge_last_update = PostgresOperator(
         postgres_conn_id="postgresconn",
         task_id="merge_last_update",
-        sql = merge_last_update_dim
+        sql = merge_last_update_dim,
+        outlets=[Dataset("s3://dataset/dataset2.csv")]
     )
 
-    wait_for_tasks = ExternalTaskSensor(
-        task_id='wait_for_tasks',
-        external_dag_id='migrate_data',
-        external_task_id="merge_last_update",  
-        check_existence = True,
-        mode='poke', 
-        timeout=600, 
-        retries=0,  
-        poke_interval=60,
-        dag=dag,
-    )
-
-    trigger_child_dag = TriggerDagRunOperator(
-        task_id='trigger_child_dag',
-        trigger_dag_id='finance_report',
-        dag=dag,
-    )
-
-    [migrate_graded_products_tb, migrate_grading_fees_tb, migrate_sold_products_tb, migrate_transport_cost_tb, migrate_platform_fees_tb] >> merge_last_update >> wait_for_tasks >> trigger_child_dag
+    [migrate_graded_products_tb, migrate_grading_fees_tb, migrate_sold_products_tb, migrate_transport_cost_tb, migrate_platform_fees_tb] >> merge_last_update
