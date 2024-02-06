@@ -31,7 +31,7 @@ with DAG(
     default_args=args,
     description='Dag that creates the final report for finance',
     schedule_interval=None,
-    start_date=datetime(2024,1,1)
+    start_date=datetime.now()
 ) as dag:
 
     base_records_tb = PostgresOperator(

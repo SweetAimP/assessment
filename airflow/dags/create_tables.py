@@ -7,7 +7,7 @@ from queries.create_base_tables import *
 
 default_args = {
     'owner': 'Diego',
-    'start_date': datetime(2024,1,1),
+    'start_date': datetime.now(),
     'retries': 2,
     'retry_delay': timedelta(minutes=5),
 }
@@ -17,7 +17,8 @@ with DAG(
     'create_tables',
     default_args=default_args,
     description='Dag that creates the base tables',
-    schedule_interval=None,
+    schedule_interval="@once",
+    catchup=True
 ) as dag:
 
     create_last_update_dim = PostgresOperator(

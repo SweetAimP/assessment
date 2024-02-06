@@ -22,7 +22,7 @@ with DAG(
     default_args=args,
     description='Dag that populates de base tables',
     schedule_interval=None,
-    start_date=datetime(2024,1,1)
+    start_date=datetime.now()
 ) as dag:
 
     migrate_graded_products_tb = PostgresOperator(
