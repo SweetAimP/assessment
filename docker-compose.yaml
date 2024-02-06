@@ -58,7 +58,7 @@ x-airflow-common:
     AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
     AIRFLOW__CORE__FERNET_KEY: ''
-    AIRFLOW_CONN_POSTGRESCONN: postgresql://postgres:example@db:5432/postgres
+    AIRFLOW_CONN_POSTGRESCONN: postgresql://postgres:postgres@db:5432/postgres
     AIRFLOW__SECRETS__BACKEND_KWARGS: '{"variables_file_path": "/data/variables.yml", "connections_file_path": "/data/connections.yml"}'
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
