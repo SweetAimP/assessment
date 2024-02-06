@@ -7,3 +7,4 @@ airflow/plugins
 outputs
 airflow/queries/__pycache__
 airflow/logs/
+airflow/commands.txt
