@@ -20,6 +20,7 @@ def build_query(path,db_table):
 with DAG(
     dag_id="migrate_data",
     default_args=args,
+    description='Dag that populates de base tables',
     schedule_interval=None,
     start_date=datetime(2024,1,1)
 ) as dag:

@@ -16,7 +16,7 @@ default_args = {
 with DAG(
     'create_tables',
     default_args=default_args,
-    description='A simple DAG to load a CSV file into PostgreSQL',
+    description='Dag that creates the base tables',
     schedule_interval=None,
 ) as dag:
 

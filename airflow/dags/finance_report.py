@@ -29,6 +29,7 @@ def _export_report():
 with DAG(
     dag_id="finance_report",
     default_args=args,
+    description='Dag that creates the final report for finance',
     schedule_interval=None,
     start_date=datetime(2024,1,1)
 ) as dag:
