@@ -43,11 +43,12 @@ To run this solution, follow these steps:
 
 1. Clone the repo: git clone **https://github.com/SweetAimP/assessment**
 2. From the root folder, execute: **docker-compose up -d** to deploy the containers.
-3. Once everything is up, access the Airflow web server at **http://localhost:8080**.
-4. The main Dag **Create_tables** will start running by itself as scheduled also will trigger the execution for the other two dags.
-5. After the execution of the finance report DAG is finished, check the Output folder for the generated CSV file.
-6. (Optional) To check the tables created during the process, log in to Adminer at **http://localhost:8088**, included in the ***docker-compose.yaml***.
+3. Unpause all the dags, and only execute the dag call **create_tables**.
+4. Once everything is up, access the Airflow web server at **http://localhost:8080**.
+5. The main Dag **Create_tables** will start running by itself as scheduled also will trigger the execution for the other two dags.
+6. After the execution of the finance report DAG is finished, check the Output folder for the generated CSV file.
+7. (Optional) To check the tables created during the process, log in to Adminer at **http://localhost:8088**, included in the ***docker-compose.yaml***.
     1. **Select** PostgresSQL (database)
     2. **User**: postgres
     3. **Password**: postgres
-7. API Check: Now that everything is finished and the tables are ready, use curl to query the API server and list items using the License_plate. Example: curl http://127.0.0.1:5000/v1/item/BW221109148489. A "No record found" response is expected for non-existent License_plates.
+8. API Check: Now that everything is finished and the tables are ready, use curl to query the API server and list items using the License_plate. Example: curl http://127.0.0.1:5000/v1/item/BW221109148489. A "No record found" response is expected for non-existent License_plates.
