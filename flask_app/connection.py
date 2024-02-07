@@ -4,6 +4,6 @@ def get_connection():
         host="db",
         database="postgres",
         user="postgres",
-        password="example"
+        password="postgres"
     )
     
