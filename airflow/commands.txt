@@ -1,4 +1,4 @@
 docker build -f DockerFile -t airflow_image .
 docker-compose up -d
-docker exec -it f2114a6327c94885e5906fa30f829c5196265f86c420f5dd36edad368f0bc10e psql -U postgres -W postgres
+docker exec -it eb7721b335ece60b4c1ea79a60b534253d114840b031c4610bdc9baf5fbba1a3 psql -U postgres -W postgres
 docker run -p 5000:5000 flask_api

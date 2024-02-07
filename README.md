@@ -50,5 +50,5 @@ To run this solution, follow these steps:
 7. (Optional) To check the tables created during the process, log in to Adminer at **http://localhost:8088**, included in the ***docker-compose.yaml***.
     1. **Select** PostgresSQL (database)
     2. **User**: postgres
-    3. **Password**: postgres
+    3. **Password**: example
 8. API Check: Now that everything is finished and the tables are ready, use curl to query the API server and list items using the License_plate. Example: curl http://127.0.0.1:5000/v1/item/BW221109148489. A "No record found" response is expected for non-existent License_plates.
